@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emoji & Text Repeater</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #ffcc70, #ff4b2b);
+        color: #333;
+      }
+
+      .container {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #ff4b2b;
+        animation: slideIn 1s ease-in-out;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin: 10px 0;
+        border: 2px solid #ff4b2b;
+        border-radius: 8px;
+        outline: none;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus {
+        border-color: #ffcc70;
+      }
+
+      button {
+        background: #ff4b2b;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: background 0.3s;
+        outline: none;
+      }
+
+      button:hover {
+        background: #ffcc70;
+      }
+
+      button:active {
+        transform: scale(0.95);
+      }
+
+      .output-container {
+        margin-top: 15px;
+        padding: 10px;
+        border: 1px solid #ff4b2b;
+        border-radius: 8px;
+        background: #f9f9f9;
+        min-height: 50px;
+        max-height: 150px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .container {
+          padding: 20px;
+          width: 90%;
+        }
+
+        h1 {
+          font-size: 20px;
+        }
+
+        button {
+          padding: 8px 16px;
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Text & Emoji Repeater</h1>
+      <input
+        type="text"
+        id="inputText"
+        placeholder="Enter your text or emoji"
+      />
+      <input type="number" id="quantity" placeholder="Quantity" min="1" />
+      <button onclick="generateText()">Generate</button>
+      <div class="output-container" id="output"></div>
+      <button onclick="copyText()">Copy</button>
+      <div
+        id="copySuccessMessage"
+        style="display: none; color: green; margin-top: 10px"
+      >
+        Copied to clipboard successfully!
+      </div>
+    </div>
+
+    <script>
+      function generateText() {
+        const text = document.getElementById("inputText").value;
+        const quantity = parseInt(document.getElementById("quantity").value);
+        if (!text || quantity < 1) {
+          alert("Please enter valid text and quantity.");
+          return;
+        }
+        const repeatedText = text.repeat(quantity);
+        document.getElementById("output").textContent = repeatedText;
+      }
+
+      function copyText() {
+        const outputText = document.getElementById("output").textContent;
+        navigator.clipboard
+          .writeText(outputText)
+          .then(() => {
+            document.getElementById("copySuccessMessage").style.display =
+              "block";
+            setTimeout(() => {
+              document.getElementById("copySuccessMessage").style.display =
+                "none";
+            }, 3000);
+          })
+          .catch((err) => {
+            alert("Failed to copy text: " + err);
+          });
+      }
+    </script>
+  </body>
+</html>
